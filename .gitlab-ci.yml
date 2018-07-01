@@ -2,15 +2,9 @@ variables:
   SPRING_PROFILES_INCLUDE: gitlab-ci
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode  -Dbuild.number=$CI_PIPELINE_ID"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-  DOCKER_HOST: "tcp://docker:2375"
-
 
 before_script:
- - docker info
  - echo test 1
-
-services:
-  - docker:dind
 
 stages:
   - build
