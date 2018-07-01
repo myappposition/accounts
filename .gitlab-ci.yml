@@ -1,0 +1,49 @@
+variables:
+  SPRING_PROFILES_INCLUDE: gitlab-ci
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode  -Dbuild.number=$CI_PIPELINE_ID"
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+
+stages:
+  - build
+  - staging-deploy
+  - production-deploy
+
+
+maven-build:
+  image: twalter/maven-docker
+  stage: build
+  before_script:
+    - export DOCKER_CONTAINER_IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+    - docker login -u _json_key -p "$MYSEC_JSON_KEY" https://eu.gcr.io
+    - echo "$MYSEC_M2_SETTINGS_XML" > .m2/settings.xml
+
+      #unset all MYSEC** vars
+    - echo secure vars && env | grep -Po '^MYSEC[^=]+'
+    - unset $(env | grep -Po '^MYSEC[^=]+' | xargs)
+  script: "mvn $MAVEN_CLI_OPTS clean deploy -Dremote=http://selenium:4444/wd/hub -Dselenide.browser=chrome"
+  services:
+    - name: selenium/standalone-chrome:latest
+      alias: selenium
+  cache:
+    paths:
+      - .m2/repository/
+  except:
+   - deploy
+
+
+
+
+
+helm-deploy-admin-service: &staging_deploy
+  image: lwolf/helm-kubectl-docker:v193_281
+  stage: staging-deploy
+  before_script:
+    - mkdir ~/.kube/
+    - echo "$MYSEC_KUBECONF" > ~/.kube/config
+    - helm init --client-only
+  script:
+    - echo "release name = " $CI_PROJECT_NAME
+    - helm  --kube-context=vyukov upgrade --install --namespace=myapp $CI_PROJECT_NAME src/main/helm/ --set=image.tag=build$CI_PIPELINE_ID --wait --timeout 3600
+  environment:
+      name: staging

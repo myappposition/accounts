@@ -1,0 +1,20 @@
+server:
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        name: MYAPPAUTH
+
+
+tests:
+  hostname: localhost
+
+
+---
+spring:
+  profiles: gitlab-ci
+
+tests:
+  hostname: ${DOCKER_CONTAINER_IP}
+
+---

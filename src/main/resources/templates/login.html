@@ -1,0 +1,91 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+>
+<head>
+    <base href="/"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+
+    <link rel="stylesheet" href="/webjars/font-awesome/4.0.3/css/font-awesome.css">
+
+
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/webjars/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <style>
+        .github {
+            color: #ffffff;
+            background-color: black;
+        }
+
+        .google {
+            color: #ffffff;
+            background-color: #d34836;
+        }
+
+        .modal-dialog {
+            width: 400px;
+        }
+
+        .modal-body {
+            margin-right: 1em;
+            margin-left: 1em;
+        }
+
+        .login-button {
+            margin-top: 1em;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+
+
+    <div sec:authorize="!isAuthenticated()" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 th:text="#{loginWith}" class="modal-title">Login with:</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <a id="githubLogin" class="btn login-button github col-sm-12" href="/login/github">
+                        <i class="fa fa-github fa-fw"></i> Github
+                    </a>
+
+                    <a id="googleLogin" class="btn login-button google col-sm-12" href="/login/google">
+                        <i class="fa fa-google-plus fa-fw"></i> Google
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div sec:authorize="isAuthenticated()" class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 th:text="#{loginSuccessful}" class="modal-title">Login successful:</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <a id="toAdminPanel" class="btn login-button btn-success col-sm-12" th:href="${@urlsConfig.getPanelUrl()}">
+                        <i class="fa fa-sign-in fa-fw"></i> <span th:text="#{toAdminPanel}">to Admin Panel</span>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
