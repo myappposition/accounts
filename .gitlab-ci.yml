@@ -4,6 +4,10 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
 
+before_script:
+ - echo test 1
+
+
 stages:
   - build
   - staging-deploy
@@ -14,8 +18,9 @@ maven-build:
   image: twalter/maven-docker
   stage: build
   before_script:
+    - echo test 2
     - export DOCKER_CONTAINER_IP=$(ip addr show eth0 | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-    - docker login -u _json_key -p "$MYSEC_JSON_KEY" https://eu.gcr.io
+    - docker login -u $MYSEC_DOCKER_LOGIN -p $MYSEC_DOCKER_PASSWORD
     - echo "$MYSEC_M2_SETTINGS_XML" > .m2/settings.xml
 
       #unset all MYSEC** vars
