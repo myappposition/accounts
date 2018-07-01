@@ -3,8 +3,6 @@ variables:
   MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode  -Dbuild.number=$CI_PIPELINE_ID"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
 
-before_script:
- - echo test 1
 
 stages:
   - build

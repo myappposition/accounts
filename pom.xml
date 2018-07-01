@@ -29,7 +29,7 @@
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 
         <docker.registry>docker.io/myappposition</docker.registry>
-
+        <build.number>0</build.number>
         <myappposition-tracker-pojo.version>1.0-SNAPSHOT</myappposition-tracker-pojo.version>
     </properties>
 
@@ -189,7 +189,7 @@
                 </executions>
                 <configuration>
                     <repository>${docker.registry}/${project.artifactId}</repository>
-                    <tag>${project.version}</tag>
+                    <tag>${build.number}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
