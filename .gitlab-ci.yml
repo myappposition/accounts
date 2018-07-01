@@ -7,6 +7,8 @@ variables:
 before_script:
  - echo test 1
 
+services:
+  - docker:dind
 
 stages:
   - build
