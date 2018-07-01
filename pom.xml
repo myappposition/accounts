@@ -189,7 +189,7 @@
                 </executions>
                 <configuration>
                     <repository>${docker.registry}/${project.artifactId}</repository>
-                    <tag>${build.number}</tag>
+                    <tag>build${build.number}</tag>
                     <buildArgs>
                         <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
                     </buildArgs>
