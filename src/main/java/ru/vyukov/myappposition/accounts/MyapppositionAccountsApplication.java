@@ -2,6 +2,7 @@ package ru.vyukov.myappposition.accounts;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -61,7 +62,11 @@ public class MyapppositionAccountsApplication extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest()
+        http.antMatcher("/**").authorizeRequests()
+                .requestMatchers(EndpointRequest.to("status", "info", "health")).permitAll()
+
+                .antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest()
+
                 .authenticated().and().exceptionHandling()
                 .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and().logout()
                 .logoutSuccessUrl("/").permitAll().and().csrf()
@@ -83,7 +88,7 @@ public class MyapppositionAccountsApplication extends WebSecurityConfigurerAdapt
 
     @Bean
     public FilterRegistrationBean<OAuth2ClientContextFilter> oauth2ClientFilterRegistration(OAuth2ClientContextFilter filter) {
-        FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<OAuth2ClientContextFilter>();
+        FilterRegistrationBean<OAuth2ClientContextFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(filter);
         registration.setOrder(-100);
         return registration;

@@ -5,10 +5,19 @@ server:
       cookie:
         name: MYAPPAUTH
 
+#management:
+#  endpoint:
+#    env:
+#      enabled: true
+#  endpoints:
+#    web:
+#     exposure:
+#       include: "*"
+
+
 
 tests:
   hostname: localhost
-
 
 ---
 spring:
@@ -18,3 +27,16 @@ tests:
   hostname: ${DOCKER_CONTAINER_IP}
 
 ---
+
+spring:
+  profiles: production
+  cloud:
+    kubernetes:
+      enable: true
+      secrets:
+        enabled: true
+        enable-api: true
+        labels:
+          oauth: internal
+      config:
+        enabled: true

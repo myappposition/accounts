@@ -2,6 +2,7 @@ urls:
  panelUrl: http://localhost:8082
 
 
+
 security:
   oauth2:
     client:
@@ -29,6 +30,7 @@ github:
     accessTokenUri: https://github.com/login/oauth/access_token
     userAuthorizationUri: https://github.com/login/oauth/authorize
     clientAuthenticationScheme: form
+    scope: user:email
   resource:
     userInfoUri: https://api.github.com/user
 
@@ -37,6 +39,35 @@ spring:
   messages:
     basename: i18n/messages
 
+
+
+
 #logging:
 #  level:
 #    org.springframework.security: DEBUG
+
+
+---
+
+spring:
+  profiles: production
+
+urls:
+   panelUrl ${endpoints.panel.manager}
+
+
+security:
+  oauth2:
+    client:
+      client-id: ${oauth.internal.clientId}
+      client-secret: ${oauth.internal.clientSecret}
+
+google:
+  client:
+    clientId:  ${oauth.google.clientId}
+    clientSecret: ${oauth.google.clientSecret}
+
+github:
+  client:
+    clientId:  ${oauth.github.clientId}
+    clientSecret: ${oauth.github.clientSecret}

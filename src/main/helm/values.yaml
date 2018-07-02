@@ -16,8 +16,9 @@ service:
 ingress:
   enabled: true
   annotations:
+     igress.kubernetes.io/ssl-redirect: "true"
      kubernetes.io/ingress.class: nginx
-    certmanager.k8s.io/cluster-issuer: letsencrypt-v01
+     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
   path: /
   hosts:
     - auth.myapp.vyukov.ru

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "myappposition-accounts.name" . }}
+  labels:
+    app: {{ template "myappposition-accounts.name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  endpoints.panel.manager: https://{{ index .Values.ingress.hosts 0  }}

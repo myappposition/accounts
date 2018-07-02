@@ -1,0 +1,13 @@
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "myappposition-accounts.fullname" . }}
+  labels:
+    app: {{ template "myappposition-accounts.name" . }}
+    chart: {{ template "myappposition-accounts.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "watch", "list"]
